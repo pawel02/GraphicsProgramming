@@ -1,0 +1,15 @@
+#pragma once
+#include "../Events/Event.h"
+
+class Layer
+{
+public:
+	virtual ~Layer() {};
+
+	virtual void on_update() = 0;
+	virtual void on_event(BasicEvent& ev) = 0;
+
+
+	virtual void on_attach() {};
+	virtual void on_detach() {};
+};
