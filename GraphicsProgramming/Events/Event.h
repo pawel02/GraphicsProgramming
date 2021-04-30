@@ -17,8 +17,8 @@ enum class EventType : uint8_t
 /*
 Macros for easily adding get_static_method
 */
-#define EVENT_TYPE(name) static const EventType& get_static_type() { return EventType::name; } \
-					virtual const EventType& get_event_type() const noexcept override {return EventType::name; }
+#define EVENT_TYPE(name) static const EventType get_static_type() { return EventType::name; } \
+					virtual const EventType get_event_type() const noexcept override {return EventType::name; }
 
 /*
 Base class that can be used to describe some sort of event
@@ -32,7 +32,7 @@ public:
 
 	bool _handled;
 
-	virtual const EventType& get_event_type() const noexcept { return EventType::None; };
+	virtual const EventType get_event_type() const noexcept { return EventType::None; };
 	virtual const char* get_event_name() const noexcept { return "Event"; };
 
 };
