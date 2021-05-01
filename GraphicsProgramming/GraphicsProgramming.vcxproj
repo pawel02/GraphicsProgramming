@@ -153,6 +153,7 @@
   <ItemGroup>
     <ClCompile Include="Core\Application.cpp" />
     <ClCompile Include="C:\libs\glad\src\glad.c" />
+    <ClCompile Include="Events\Event.cpp" />
     <ClCompile Include="Layers\GraphicsLayer.cpp" />
     <ClCompile Include="Core\Window.cpp" />
     <ClCompile Include="Shaders\Shader.cpp" />
@@ -167,7 +168,6 @@
     <ClInclude Include="Core\Core.h" />
     <ClInclude Include="Events\Keyboard.h" />
     <ClInclude Include="Layers\GraphicsLayer.h" />
-    <ClInclude Include="Layers\Layer.h" />
     <ClInclude Include="Core\Window.h" />
     <ClInclude Include="Events\Event.h" />
     <ClInclude Include="Events\WindowEvents.h" />

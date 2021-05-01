@@ -1,25 +1,13 @@
 #include "Application.h"
 #include "../Shaders/Shader.h"
-#include "../Layers/GraphicsLayer.h"
+
 
 Application::Application() 
-	:_window{500, 500, "Learning OpenGL"}
-{
-	_window.set_function_callback([&](BasicEvent& ev) {
-		on_event(ev);
-	});
-
-	//create all of the necessary layers
-	_layers.emplace_back(new GraphicsLayer{&_window});
-}
+	:_window{ 500, 500, "Learning OpenGL" }, _graphics{&_window}
+{}
 
 Application::~Application() 
 {
-	//delete all of the layers
-	for (auto&& layer : _layers)
-	{
-		delete layer;
-	}
 }
 
 void Application::run() 
@@ -95,32 +83,4 @@ void Application::run()
 	glDeleteBuffers(2, VBO);
 
 	glfwTerminate();
-}
-
-void Application::on_event(BasicEvent& ev)
-{
-	Dispatcher dispatcher(ev);
-	dispatcher.dispatch<WindowCloseEvent>([&](WindowCloseEvent& ev) {
-		return window_close(ev);
-	});
-	dispatcher.dispatch<WindowResizeEvent>([&](WindowResizeEvent& ev) {
-		return window_resize(ev);
-	});
-
-	//call all of the layers in here
-	/*
-	*/
-}
-
-bool Application::window_close(WindowCloseEvent& ev)
-{
-	_window.close();
-
-	return true;
-}
-
-bool Application::window_resize(WindowResizeEvent& ev)
-{
-	_window.resize(ev.get_size());
-	return true;
 }

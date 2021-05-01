@@ -3,8 +3,7 @@
 
 #include "../Events/WindowEvents.h"
 #include "Window.h"
-
-#include "../Layers/Layer.h"
+#include "../Layers/GraphicsLayer.h"
 
 class Application
 {
@@ -15,14 +14,8 @@ public:
 	void run();
 
 private:
-	void on_event(BasicEvent& ev);
-
-	bool window_resize(WindowResizeEvent& ev);
-	bool window_close(WindowCloseEvent& ev);
-
-private:
 	Window _window;
 
-	std::vector<Layer*> _layers;
+	GraphicsLayer _graphics;
 };
 

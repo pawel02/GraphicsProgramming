@@ -4,7 +4,7 @@
 
 #include <functional>
 #include "../Events/Event.h"
-#include "../utils/Vectors.h"
+#include "../Events/WindowEvents.h"
 
 class Window
 {
@@ -17,11 +17,10 @@ public:
 	Window() = delete;
 	~Window() noexcept;
 
-	inline void set_function_callback(const Func& func) { _data._callback = func;  };
 	inline bool is_window_open() const noexcept { return !glfwWindowShouldClose(_window);  };
 
-	void close();
-	void resize(const Vec2<int>& size);
+	bool close();
+	bool resize(WindowResizeEvent* ev);
 
 	GLFWwindow* get_window() noexcept { return _window; }
 
@@ -38,8 +37,6 @@ private:
 
 		int _width;
 		int _height;
-
-		Func _callback;
 	};
 
 	WindowData _data;

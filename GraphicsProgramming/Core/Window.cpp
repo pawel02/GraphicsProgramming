@@ -2,7 +2,7 @@
 #include <iostream>
 #include "../Events/WindowEvents.h"
 #include "../Events/Keyboard.h"
-
+#include "../utils/Vectors.h"
 
 Window::Window(int width, int height, const char* title) noexcept
 {
@@ -34,6 +34,15 @@ Window::Window(int width, int height, const char* title) noexcept
 		{
 			glViewport(0, 0, width, height);
 
+			//subscribe to the window events
+			EventBus::subscribe<WindowResizeEvent>([&](BasicEvent* ev) {
+				return resize(static_cast<WindowResizeEvent*>(ev));
+			});
+
+			EventBus::subscribe<WindowCloseEvent>([&](BasicEvent* ev) {
+				return close();
+			});
+
 			register_events();
 		}
 	}
@@ -53,7 +62,7 @@ void Window::register_events() noexcept
 		data._height = height;
 
 		WindowResizeEvent ev{width, height};
-		data._callback(ev);
+		EventBus::publish<WindowResizeEvent>(&ev);
 	});
 
 
@@ -61,7 +70,7 @@ void Window::register_events() noexcept
 		WindowData& data = *(static_cast<WindowData*>(glfwGetWindowUserPointer(window)));
 
 		WindowCloseEvent ev{};
-		data._callback(ev);
+		EventBus::publish<WindowCloseEvent>(&ev);
 	});
 
 	//all of the keycallbacks
@@ -73,7 +82,7 @@ void Window::register_events() noexcept
 			case GLFW_PRESS:
 			{
 				KeyPressedEvent ev{ key };
-				data._callback(ev);
+				EventBus::publish<KeyPressedEvent>(&ev);
 				break;
 			}
 		}
@@ -82,15 +91,19 @@ void Window::register_events() noexcept
 }
 
 
-void Window::close()
+bool Window::close()
 {
 	glfwSetWindowShouldClose(_window, true);
+	return true;
 }
 
-void Window::resize(const Vec2<int>& size)
+bool Window::resize(WindowResizeEvent* ev)
 {
+	Vec2<int> size = ev->get_size();
+
 	_data._width = size.x;
 	_data._height = size.y;
 
 	glViewport(0, 0, size.x, size.y);
+	return true;
 }

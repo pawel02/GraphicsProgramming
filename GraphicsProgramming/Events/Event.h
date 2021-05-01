@@ -2,6 +2,8 @@
 #include <cstdint>
 #include <functional>
 #include <type_traits>
+#include <unordered_map>
+#include <typeindex>
 
 /*
 All the different types of events will go in here
@@ -30,55 +32,54 @@ class BasicEvent
 public:
 	virtual ~BasicEvent() = default;
 
-	bool _handled;
+	bool _handled = false;
 
 	virtual const EventType get_event_type() const noexcept { return EventType::None; };
 	virtual const char* get_event_name() const noexcept { return "Event"; };
 
 };
 
-
-// Uses SPHINAE to make sure the class has a member function of get_static_type
-template <typename T>
-class StaticTypeMethod
-{
-private:
-	typedef char YesType[1];
-	typedef char NoType[2];
-
-	template <typename C> static YesType& test(decltype(&C::get_static_type));
-	template <typename C> static NoType& test(...);
-
-
-public:
-	enum { value = sizeof(test<T>(0)) == sizeof(YesType) };
-};
-
 /*
-Used to run the callback only if the event matches what you want
+Responsible for handling the subscribers
+This is a completely static class as there only should ever be 1 event
+bus that handles all of the events for now at least
 */
-class Dispatcher
+class EventBus
 {
 public:
-	Dispatcher(BasicEvent& ev) noexcept
-		:_event(ev)
-	{}
+	using EventFn = std::function<bool(BasicEvent*)>;
+	using EventVector = std::vector<EventFn>;
 
-	template<typename T, typename F>
-	bool dispatch(const F& func) const
+	template<typename EventType>
+	static void publish(EventType* ev)
 	{
-		static_assert(StaticTypeMethod<T>::value, "You need to have the get_static_type method");
-		
-		if (_event.get_event_type() == T::get_static_type())
-		{
-			_event._handled = func(static_cast<T&>(_event));
+		EventVector* handlers = _subscribers[typeid(EventType)];
 
-			return true;
+		if (handlers != nullptr)
+		{
+			for (EventFn& func : *handlers)
+			{
+				func(ev);
+				//if(func(ev)) break;
+			}
+		}
+	}
+
+	template<typename EventType>
+	static void subscribe(EventFn func)
+	{
+		//get all of the callbacks for that event
+		EventVector* handlers = _subscribers[typeid(EventType)];
+
+		if (handlers == nullptr)
+		{
+			handlers = new EventVector();
+			_subscribers[typeid(EventType)] = handlers;
 		}
 
-		return false;
+		handlers->emplace_back(func);
 	}
 
 private:
-	BasicEvent& _event;
+	static std::unordered_map<std::type_index, EventVector*> _subscribers;
 };
