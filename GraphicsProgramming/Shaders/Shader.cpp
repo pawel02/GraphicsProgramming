@@ -27,27 +27,35 @@ Shader::~Shader()
 void Shader::load_shader(unsigned int shader_type, const char* shader_file)
 {
 	//get the source code for the shader
-	std::fstream file(shader_file);
-	std::string shader_source((std::istreambuf_iterator<char>(file)),
-		std::istreambuf_iterator<char>());
+	std::ifstream file(shader_file);
+	if (file.is_open())
+	{
+		std::string shader_source((std::istreambuf_iterator<char>(file)),
+			std::istreambuf_iterator<char>());
 
-	//create the shader
-	unsigned int shader = glCreateShader(shader_type);
-	_shaders.emplace_back(shader);
-	const char* source = shader_source.c_str();
-	glShaderSource(shader, 1, &source, NULL);
-	glCompileShader(shader);
+		//create the shader
+		unsigned int shader = glCreateShader(shader_type);
+		_shaders.emplace_back(shader);
+		const char* source = shader_source.c_str();
+		glShaderSource(shader, 1, &source, NULL);
+		glCompileShader(shader);
 
 
 #ifdef _DEBUG
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-	//do some error checking
-	if (!success)
-	{
-		glGetShaderInfoLog(shader, 512, NULL, infoLog);
-		assert(infoLog);
-	}
+		glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+		//do some error checking
+		if (!success)
+		{
+			glGetShaderInfoLog(shader, 512, NULL, infoLog);
+			assert(infoLog);
+		}
 #endif
+	}
+	else
+	{
+		std::cout << "Could not load the shader source code\n";
+	}
+
 }
 
 void Shader::delete_shaders() 
@@ -112,4 +120,10 @@ void Shader::set_uniform_4f(const char* uniform_name, float x, float y, float z,
 {
 	int uniform_location = get_uniform_location(uniform_name);
 	glUniform4f(uniform_location, x, y, z, w);
+}
+
+void Shader::set_uniform_1i(const char* uniform_name, int i)
+{
+	int uniform_location = get_uniform_location(uniform_name);
+	glUniform1i(uniform_location, i);
 }

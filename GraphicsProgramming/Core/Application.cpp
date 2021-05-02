@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "../Shaders/Shader.h"
+#include "../Textures/Texture2D.h"
 
 
 Application::Application() 
@@ -10,24 +11,16 @@ Application::~Application()
 {
 }
 
-void Application::run() 
+void Application::run()
 {
 	//do all of the preperation
 	//create the vertices and everything needed for the first triangle
 	float vertices[] = {
-		// positions         // colors
-		 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
-		-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
-		-0.5f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f,   // top left
-		 0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 1.0f    // top right
-	};
-
-	float vertices_other[] = {
-		// positions         // colors
-		 0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 0.0f,   // bottom right
-		-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
-		-0.5f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f,   // top left
-		 0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 1.0f    // top right
+		// positions          // colors           // texture coords
+		0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
+		0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
+	   -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+	   -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
 	};
 
 	//create VBO and VAO
@@ -41,11 +34,14 @@ void Application::run()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	//tell openGL how to interpret the VBO
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 
 	//create the EBO
 	unsigned int EBO[2];
@@ -59,12 +55,15 @@ void Application::run()
 
 
 	Shader program = Shader{ "./Shaders/vertex.glsl", "./Shaders/fragment.glsl" };
+	
+	//add all of the textures
+	Texture2D textures = Texture2D("./assets/tex1.jpg");
+	textures.add_texture("./assets/tex2.jpg");
 
+	program.set_uniform_1i("texture1", 0);
+	program.set_uniform_1i("texture2", 1);
 
 	//create the main loop
-	//draw in wireframe mode
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
 	while (_window.is_window_open())
 	{
 		//handle rendering
@@ -79,8 +78,10 @@ void Application::run()
 		glfwPollEvents();
 	}
 
+	//do all the necessary cleanup
 	glDeleteVertexArrays(2, VAO);
 	glDeleteBuffers(2, VBO);
+	glDeleteBuffers(2, EBO);
 
 	glfwTerminate();
 }

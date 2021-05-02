@@ -59,8 +59,7 @@ public:
 		{
 			for (EventFn& func : *handlers)
 			{
-				func(ev);
-				//if(func(ev)) break;
+				if(func(ev)) break;
 			}
 		}
 	}

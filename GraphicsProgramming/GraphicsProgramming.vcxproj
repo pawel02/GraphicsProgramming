@@ -122,7 +122,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\libs\GLFW\include;C:\libs\glad\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\libs\GLFW\include;C:\libs\glad\include; C:\libs\stb_image</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,7 +139,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\libs\GLFW\include;C:\libs\glad\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\libs\GLFW\include;C:\libs\glad\include; C:\libs\stb_image</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -158,6 +158,8 @@
     <ClCompile Include="Core\Window.cpp" />
     <ClCompile Include="Shaders\Shader.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="stb_image.cpp" />
+    <ClCompile Include="Textures\Texture2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\fragment.glsl" />
@@ -172,6 +174,7 @@
     <ClInclude Include="Events\Event.h" />
     <ClInclude Include="Events\WindowEvents.h" />
     <ClInclude Include="Shaders\Shader.h" />
+    <ClInclude Include="Textures\Texture2D.h" />
     <ClInclude Include="utils\Vectors.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

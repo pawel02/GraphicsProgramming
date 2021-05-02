@@ -13,4 +13,6 @@ private:
 
 private:
 	Window* _window;
+
+	bool isPolygon = false;
 };
