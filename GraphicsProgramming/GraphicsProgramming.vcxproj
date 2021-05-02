@@ -123,6 +123,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\libs\GLFW\include;C:\libs\glad\include; C:\libs\stb_image</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -140,6 +141,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\libs\GLFW\include;C:\libs\glad\include; C:\libs\stb_image</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -173,6 +175,7 @@
     <ClInclude Include="Core\Window.h" />
     <ClInclude Include="Events\Event.h" />
     <ClInclude Include="Events\WindowEvents.h" />
+    <ClInclude Include="Layers\Layer.h" />
     <ClInclude Include="Shaders\Shader.h" />
     <ClInclude Include="Textures\Texture2D.h" />
     <ClInclude Include="utils\Vectors.h" />

@@ -26,6 +26,7 @@ public:
 public:
 	void set_uniform_4f(const char* uniform_name, float x, float y, float z, float w) noexcept;
 	void set_uniform_1i(const char* uniform_name, int i);
+	void set_uniform_1f(const char* uniform_name, float i);
 
 private:
 	int get_uniform_location(const char* uniform_name) noexcept;

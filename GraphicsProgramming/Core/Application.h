@@ -1,9 +1,11 @@
 #pragma once
-#include <vector>
-
-#include "../Events/WindowEvents.h"
 #include "Window.h"
-#include "../Layers/GraphicsLayer.h"
+#include "../Shaders/Shader.h"
+#include "../Events/WindowEvents.h"
+
+#include <vector>
+#include "../Layers/Layer.h"
+#include <memory>
 
 class Application
 {
@@ -16,6 +18,6 @@ public:
 private:
 	Window _window;
 
-	GraphicsLayer _graphics;
+	std::vector<std::unique_ptr<Layer>> _layers;
 };
 

@@ -5,6 +5,7 @@
 
 Texture2D::Texture2D(const char* filepath)
 {
+	stbi_set_flip_vertically_on_load(true);
 	add_texture(filepath);
 }
 
@@ -44,7 +45,7 @@ void Texture2D::add_texture(const char* filepath, const Vec2<int> texWrap, const
 
 void Texture2D::bindAll()
 {
-	for (size_t i = 0; i < _data.size(); ++i)
+	for (int i = 0; i < _data.size(); ++i)
 	{
 		glActiveTexture(GL_TEXTURE0 + i);
 		glBindTexture(GL_TEXTURE_2D, _data[i].buffer);
@@ -55,7 +56,6 @@ void Texture2D::load_texture()
 {
 	const auto data = _data.end() - 1;
 
-	stbi_set_flip_vertically_on_load(true);
 	data->texData = stbi_load(data->_filepath, &data->width, &data->height, &data->nChannels, 0);
 	if (data->texData != nullptr)
 	{
@@ -63,7 +63,7 @@ void Texture2D::load_texture()
 		glGenTextures(1, &data->buffer);
 
 		//assign this to the next texture spot
-		glActiveTexture(GL_TEXTURE0 + (_data.size() - 1));
+		glActiveTexture(GL_TEXTURE0 + static_cast<int>(_data.size() - 1));
 		glBindTexture(GL_TEXTURE_2D, data->buffer);
 
 		//wrapping

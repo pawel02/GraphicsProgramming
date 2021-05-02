@@ -127,3 +127,9 @@ void Shader::set_uniform_1i(const char* uniform_name, int i)
 	int uniform_location = get_uniform_location(uniform_name);
 	glUniform1i(uniform_location, i);
 }
+
+void Shader::set_uniform_1f(const char* uniform_name, float i)
+{
+	int uniform_location = get_uniform_location(uniform_name);
+	glUniform1f(uniform_location, i);
+}
