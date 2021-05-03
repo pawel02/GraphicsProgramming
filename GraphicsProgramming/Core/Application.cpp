@@ -2,7 +2,7 @@
 #include "../Layers/GraphicsLayer.h"
 
 Application::Application() 
-	:_window{ 1200, 800, "Learning OpenGL" }
+	:_window{ 800, 600, "Learning OpenGL" }
 {
 	//create all of the layers needed to run the applicaion
 	_layers.emplace_back(std::make_unique<GraphicsLayer>(&_window));
@@ -20,12 +20,14 @@ Application::~Application()
 
 void Application::run()
 {
+	glEnable(GL_DEPTH_TEST);
+
 	//create the main loop
 	while (_window.is_window_open())
 	{
 		//handle rendering
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//update all of the layers
 		for (auto& layer : _layers)

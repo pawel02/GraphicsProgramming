@@ -83,6 +83,9 @@ public:
 			_vertex_buffer = std::move(other._vertex_buffer);
 			_index_buffer = std::move(other._index_buffer);
 
+
+			// set this to the max to make sure that you don't delete the 
+			// VertexArray when the temp object gets destroyed
 			other.vertex_array = 4294967295;
 		}
 

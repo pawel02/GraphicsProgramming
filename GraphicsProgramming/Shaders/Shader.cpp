@@ -4,6 +4,8 @@
 #include <assert.h>
 #include <iostream>
 
+#include <glm/gtc/type_ptr.hpp>
+
 Shader::Shader(const char* vertexFile, const char* fragmentFile) noexcept
 {
 	load_shader(GL_VERTEX_SHADER, vertexFile);
@@ -114,6 +116,12 @@ int Shader::get_uniform_location(const char* uniform_name) noexcept
 	//making sure that the program is bound
 	bind();
 	return uniform_location;
+}
+
+void Shader::set_uniform_mat4f(const char* uniform_name, const glm::mat4& matrix)
+{
+	int uniform_location = get_uniform_location(uniform_name);
+	glUniformMatrix4fv(uniform_location, 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
 void Shader::set_uniform_4f(const char* uniform_name, float x, float y, float z, float w) noexcept

@@ -1,11 +1,10 @@
 #version 420
 out vec4 FragColor;
 
-in vec3 ourColor;
-in vec2 TexCoord;
-
 uniform sampler2D _tex1;
 uniform sampler2D _tex2;
+
+in vec2 TexCoord;
 
 uniform float blend_factor;
 void main()

@@ -122,7 +122,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\libs\GLFW\include;C:\libs\glad\include; C:\libs\stb_image</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\libs\GLFW\include;C:\libs\glad\include; C:\libs\stb_image; C:\libs\glm</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -140,7 +140,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\libs\GLFW\include;C:\libs\glad\include; C:\libs\stb_image</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\libs\GLFW\include;C:\libs\glad\include; C:\libs\stb_image; C:\libs\glm</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
