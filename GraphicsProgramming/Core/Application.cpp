@@ -2,7 +2,7 @@
 #include "../Layers/GraphicsLayer.h"
 
 Application::Application() 
-	:_window{ 500, 500, "Learning OpenGL" }
+	:_window{ 1200, 800, "Learning OpenGL" }
 {
 	//create all of the layers needed to run the applicaion
 	_layers.emplace_back(std::make_unique<GraphicsLayer>(&_window));

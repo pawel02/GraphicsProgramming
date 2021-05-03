@@ -1,7 +1,9 @@
+#include <iostream>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
 #include "Texture2D.h"
-#include <iostream>
 
 Texture2D::Texture2D(const char* filepath)
 {
@@ -78,7 +80,7 @@ void Texture2D::load_texture()
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, data->width, data->height, 0, GL_RGB, GL_UNSIGNED_BYTE, data->texData);
 		glGenerateMipmap(GL_TEXTURE_2D);
 
-		//clear the memory for the image
+		//clear the memory for the image as its on the GPU now
 		stbi_image_free(data->texData);
 	}
 	else

@@ -1,11 +1,9 @@
 #pragma once
-#include "Window.h"
-#include "../Shaders/Shader.h"
-#include "../Events/WindowEvents.h"
-
 #include <vector>
-#include "../Layers/Layer.h"
 #include <memory>
+
+#include "Window.h"
+#include "../Layers/Layer.h"
 
 class Application
 {

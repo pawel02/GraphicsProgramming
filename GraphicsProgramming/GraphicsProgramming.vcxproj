@@ -169,7 +169,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
+    <ClInclude Include="Core\Buffers.h" />
     <ClInclude Include="Core\Core.h" />
+    <ClInclude Include="Core\VertexArray.h" />
     <ClInclude Include="Events\Keyboard.h" />
     <ClInclude Include="Layers\GraphicsLayer.h" />
     <ClInclude Include="Core\Window.h" />

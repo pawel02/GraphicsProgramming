@@ -1,6 +1,8 @@
+#include <algorithm>
+#include <iostream>
+
 #include "GraphicsLayer.h"
 #include "../Textures/Texture2D.h"
-#include <algorithm>
 
 GraphicsLayer::GraphicsLayer(Window* window) noexcept
 	:_window{window},
@@ -20,35 +22,20 @@ GraphicsLayer::GraphicsLayer(Window* window) noexcept
 	   -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
 	   -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
 	};
-
-	//create VBO and VAO
-	glGenBuffers(2, VBO);
-	glGenVertexArrays(2, VAO);
-
-	glBindVertexArray(VAO[0]);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	//tell openGL how to interpret the VBO
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-
-	//create the EBO
 	unsigned int indices[] = {
 		0, 1, 3,
 		1, 2, 3
 	};
-	glGenBuffers(2, EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO[0]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
+	//Create the VAO that will prepare all of the data ready for drawing
+	VAO = std::move(VertexArray<float, unsigned int>{
+		vertices, sizeof(vertices), indices, sizeof(indices), 
+		{ 
+			VertexAttribLayout{3, GL_FLOAT, GL_FALSE, 8 * sizeof(float)},
+			VertexAttribLayout{3, GL_FLOAT, GL_FALSE, 8 * sizeof(float)},
+			VertexAttribLayout{2, GL_FLOAT, GL_FALSE, 8 * sizeof(float)},
+		}
+	});
 
 	//add all of the textures
 	Texture2D textures = Texture2D("./assets/tex1.jpg");
@@ -63,9 +50,6 @@ GraphicsLayer::GraphicsLayer(Window* window) noexcept
 void GraphicsLayer::on_detach()
 {
 	//do all the necessary cleanup
-	glDeleteVertexArrays(2, VAO);
-	glDeleteBuffers(2, VBO);
-	glDeleteBuffers(2, EBO);
 }
 
 void GraphicsLayer::on_update() 

@@ -4,6 +4,8 @@
 #include "../Events/Keyboard.h"
 #include "Layer.h"
 
+#include "../Core/VertexArray.h"
+
 class GraphicsLayer : public Layer
 {
 public:
@@ -17,8 +19,7 @@ private:
 	bool handle_key_pressed(KeyPressedEvent* ev);
 
 private:
-	unsigned int VBO[2], VAO[2];
-	unsigned int EBO[2];
+	VertexArray<float, unsigned int> VAO;
 
 	Window* _window;
 

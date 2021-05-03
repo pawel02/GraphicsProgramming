@@ -5,6 +5,7 @@
 #include "../utils/Vectors.h"
 
 Window::Window(int width, int height, const char* title) noexcept
+	:_data{}
 {
 	//initialize the GLFW
 	if (!glfwInit())
