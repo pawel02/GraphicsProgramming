@@ -2,6 +2,7 @@
 #include <iostream>
 #include "../Events/WindowEvents.h"
 #include "../Events/Keyboard.h"
+#include "../Events/Mouse.h"
 #include "../utils/Vectors.h"
 
 Window::Window(int width, int height, const char* title) noexcept
@@ -15,8 +16,13 @@ Window::Window(int width, int height, const char* title) noexcept
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
+
 	
 	_window = glfwCreateWindow(width, height, title, NULL, NULL);
+	
+	//disable the mouse
+	glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
 	if (_window == NULL)
 	{
 		std::cout << "Failed to create a window\n";
@@ -68,8 +74,6 @@ void Window::register_events() noexcept
 
 
 	glfwSetWindowCloseCallback(_window, [](GLFWwindow* window) {
-		WindowData& data = *(static_cast<WindowData*>(glfwGetWindowUserPointer(window)));
-
 		WindowCloseEvent ev{};
 		EventBus::publish<WindowCloseEvent>(&ev);
 	});
@@ -77,7 +81,6 @@ void Window::register_events() noexcept
 	//all of the keycallbacks
 	glfwSetKeyCallback(_window, []
 	(GLFWwindow* window, int key, int scancode, int action, int mods) {
-		WindowData& data = *(static_cast<WindowData*>(glfwGetWindowUserPointer(window)));
 		switch (action)
 		{
 			case GLFW_PRESS:
@@ -86,8 +89,18 @@ void Window::register_events() noexcept
 				EventBus::publish<KeyPressedEvent>(&ev);
 				break;
 			}
+			case GLFW_RELEASE:
+			{
+				KeyReleasedEvent ev{ key };
+				EventBus::publish<KeyReleasedEvent>(&ev);
+				break;
+			}
 		}
+	});
 
+	glfwSetCursorPosCallback(_window, [](GLFWwindow* window, double xpos, double ypos) {
+		MouseMovedEvent ev{xpos, ypos};
+		EventBus::publish<MouseMovedEvent>(&ev);
 	});
 }
 

@@ -17,5 +17,7 @@ private:
 	Window _window;
 
 	std::vector<std::unique_ptr<Layer>> _layers;
+
+	float previous_time = 0.0f;
 };
 

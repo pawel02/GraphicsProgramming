@@ -22,6 +22,8 @@ void Application::run()
 {
 	glEnable(GL_DEPTH_TEST);
 
+	previous_time = (float)glfwGetTime();
+	float deltaTime = 0.0f;
 	//create the main loop
 	while (_window.is_window_open())
 	{
@@ -29,11 +31,14 @@ void Application::run()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		deltaTime = (float)glfwGetTime() - previous_time;
 		//update all of the layers
 		for (auto& layer : _layers)
 		{
-			layer->on_update();
+			layer->on_update(deltaTime);
 		}
+
+		previous_time = (float)glfwGetTime();
 
 		//swap the buffers and poll for events
 		glfwSwapBuffers(_window.get_window());

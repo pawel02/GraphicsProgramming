@@ -1,6 +1,8 @@
 #include <algorithm>
 #include <iostream>
 
+#include "../Core/Core.h"
+
 #include "GraphicsLayer.h"
 #include "../Textures/Texture2D.h"
 
@@ -15,7 +17,15 @@ GraphicsLayer::GraphicsLayer(Window* window) noexcept
 	//sub to all the necessary events
 	EventBus::subscribe<KeyPressedEvent>([&](BasicEvent* ev) {
 		return handle_key_pressed(static_cast<KeyPressedEvent*>(ev));
-		});
+	});
+	EventBus::subscribe<KeyReleasedEvent>([&](BasicEvent* ev) {
+		return handle_key_released(static_cast<KeyReleasedEvent*>(ev));
+	});
+	EventBus::subscribe<MouseMovedEvent>([&](BasicEvent* ev) {
+		mouse_state |= BIT(1);
+		mouse_moved = static_cast<MouseMovedEvent*>(ev)->get_pos();
+		return false;
+	});
 
 	//do all of the preperation
 	//create the vertices and everything needed for the first triangle
@@ -94,14 +104,9 @@ GraphicsLayer::GraphicsLayer(Window* window) noexcept
 
 	program.set_uniform_1f("blend_factor", blend_factor);
 
-	//these dont need to be calculated every frame
-	glm::mat4 view{ 1.0f };
-	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-
-	program.set_uniform_mat4f("view", view);
+	
 	program.set_uniform_mat4f("projection", projection);
-
 }
 
 void GraphicsLayer::on_detach()
@@ -109,8 +114,47 @@ void GraphicsLayer::on_detach()
 	//do all the necessary cleanup
 }
 
-void GraphicsLayer::on_update() 
+void GraphicsLayer::on_update(float deltaTime)
 {
+	float speed = cameraSpeed * deltaTime;
+	if (_keys_down & BIT(0)) // W
+	{
+		//cameraPos += speed * glm::vec3(1.0f, 0.0f, 1.0f) * cameraFront; //lock on the xz plane
+		cameraPos += speed * cameraFront;
+	}
+	if (_keys_down & BIT(1)) // S
+	{
+		//cameraPos -= speed * glm::vec3(1.0f, 0.0f, 1.0f) * cameraFront;
+		cameraPos -= speed * cameraFront;
+	}
+	if (_keys_down & BIT(2)) // A
+	{
+		//cameraPos -= speed * glm::vec3(1.0f, 0.0f, 1.0f) * glm::normalize(glm::cross(cameraFront, cameraUp));
+		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * speed;
+	}
+	if (_keys_down & BIT(3)) // D
+	{
+		//cameraPos += speed * glm::vec3(1.0f, 0.0f, 1.0f) * glm::normalize(glm::cross(cameraFront, cameraUp));
+		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * speed;
+	}
+
+	//mouse movment
+	if (mouse_state & BIT(1))
+	{
+		handle_mouse(deltaTime);
+		mouse_state ^= BIT(1);
+	}
+
+
+	glm::mat4 view = glm::lookAt(
+		cameraPos,
+		cameraPos + cameraFront,
+		cameraUp
+	);
+
+	program.set_uniform_mat4f("view", view);
+
+
 	//create a transformation to move the rectangle
 	for (auto& cube : cubePos)
 	{
@@ -158,7 +202,90 @@ bool GraphicsLayer::handle_key_pressed(KeyPressedEvent* ev)
 			program.set_uniform_1f("blend_factor", blend_factor);
 			break;
 		}
+		case GLFW_KEY_W:
+		{
+			_keys_down |= BIT(0);
+			break;
+		}
+		case GLFW_KEY_S:
+		{
+			_keys_down |= BIT(1);
+			break;
+		}
+		case GLFW_KEY_A:
+		{
+			_keys_down |= BIT(2);
+			break;
+		}
+		case GLFW_KEY_D:
+		{
+			_keys_down |= BIT(3);
+			break;
+		}
 	}
+
+	return false;
+}
+
+bool GraphicsLayer::handle_key_released(KeyReleasedEvent* ev)
+{
+	switch (ev->get_code())
+	{
+		case GLFW_KEY_W:
+		{
+			_keys_down ^= BIT(0);
+			break;
+		}
+		case GLFW_KEY_S:
+		{
+			_keys_down ^= BIT(1);
+			break;
+		}
+		case GLFW_KEY_A:
+		{
+			_keys_down ^= BIT(2);
+			break;
+		}
+		case GLFW_KEY_D:
+		{
+			_keys_down ^= BIT(3);
+			break;
+		}
+	}
+	return false;
+}
+
+bool GraphicsLayer::handle_mouse(double deltaTime)
+{
+	if (mouse_state & BIT(0))
+	{
+		mouse_state |= BIT(0);
+		lastX = mouse_moved.x;
+		lastY = mouse_moved.y;
+	}
+
+	float xOffset = mouse_moved.x - lastX;
+	float yOffset = lastY - mouse_moved.y; //y is inverted
+
+	lastX = mouse_moved.x;
+	lastY = mouse_moved.y;
+
+	xOffset *= sensitivity * deltaTime;
+	yOffset *= sensitivity * deltaTime;
+
+	yaw   += xOffset;
+	pitch += yOffset;
+
+	if (pitch > 89.0f)
+		pitch = 89.0f;
+	if (pitch < -89.0f)
+		pitch = -89.0f;
+
+	glm::vec3 direction;
+	direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+	direction.y = sin(glm::radians(pitch));
+	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	cameraFront = glm::normalize(direction);
 
 	return false;
 }
