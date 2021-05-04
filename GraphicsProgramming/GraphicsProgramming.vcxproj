@@ -156,6 +156,7 @@
     <ClCompile Include="Core\Application.cpp" />
     <ClCompile Include="C:\libs\glad\src\glad.c" />
     <ClCompile Include="Events\Event.cpp" />
+    <ClCompile Include="Layers\Camera.cpp" />
     <ClCompile Include="Layers\GraphicsLayer.cpp" />
     <ClCompile Include="Core\Window.cpp" />
     <ClCompile Include="Shaders\Shader.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="Core\VertexArray.h" />
     <ClInclude Include="Events\Keyboard.h" />
     <ClInclude Include="Events\Mouse.h" />
+    <ClInclude Include="Layers\Camera.h" />
     <ClInclude Include="Layers\GraphicsLayer.h" />
     <ClInclude Include="Core\Window.h" />
     <ClInclude Include="Events\Event.h" />

@@ -106,7 +106,7 @@ public:
 	}
 
 private:
-	unsigned int vertex_array;
+	unsigned int vertex_array = 0;
 
 	VertexBuffer<VertexType> _vertex_buffer;
 	IndexBuffer<IndexType> _index_buffer;
