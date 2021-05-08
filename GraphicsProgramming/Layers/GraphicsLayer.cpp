@@ -123,6 +123,10 @@ GraphicsLayer::GraphicsLayer(Window* window) noexcept
 	_program.set_uniform_3f("light.Diffuse", 0.5f, 0.5f, 0.5f);
 	_program.set_uniform_3f("light.Specular", 1.0f, 1.0f, 1.0f);
 
+	_program.set_uniform_1f("light.constant", 1.0f);
+	_program.set_uniform_1f("light.linear", 0.045f);
+	_program.set_uniform_1f("light.quadratic", 0.0075f);
+
 	//set the light position
 	model = std::move(glm::mat4{ 1.0f });
 
@@ -151,16 +155,6 @@ void GraphicsLayer::on_update(float deltaTime)
 	//move the emission texture
 	_program.set_uniform_1f("time", (float)glfwGetTime());
 
-	glm::vec3 lightColor;
-	lightColor.x = sin(glfwGetTime() * 2.0f);
-	lightColor.y = sin(glfwGetTime() * 0.7f);
-	lightColor.z = sin(glfwGetTime() * 1.3f);
-
-	glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
-	glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
-
-	_program.set_uniform_3f("light.Ambient", ambientColor.x, ambientColor.y, ambientColor.z);
-	_program.set_uniform_3f("light.Diffuse", diffuseColor.x, diffuseColor.y, diffuseColor.z);
 
 	for (auto& cube : cubePos)
 	{

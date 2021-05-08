@@ -13,6 +13,10 @@ struct Light
 	vec3 Ambient;
 	vec3 Diffuse;
 	vec3 Specular;
+
+	float constant;
+	float linear;
+	float quadratic;
 };
 
 struct Material 
@@ -34,24 +38,32 @@ uniform float time;
 
 void main()
 {
+	float dist = length(light.Pos - FragPos);
+	float attenuation = 1.0 / (light.constant + light.linear * dist + 
+    		    light.quadratic * (dist * dist));
+
 	vec3 ambient = light.Ambient * vec3(texture(material.tex, TexCoords));
+	ambient *= attenuation;
 
 	vec3 norm = normalize(Normal);
 	vec3 lightDir = normalize(light.Pos - FragPos);  
 	
 	float diff = max(dot(norm, lightDir), 0.0);
 	vec3 diffuse = light.Diffuse * diff * vec3(texture(material.tex, TexCoords));
+	diffuse *= attenuation;
 
 	float specularStrength = 0.5;
 	
 	vec3 viewDir = normalize(viewPos - FragPos);
-	vec3 reflectDir = reflect(-lightDir, norm);  
+	vec3 reflectDir = reflect(-lightDir, norm);
 	
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.Shininess);
 	vec3 specular = light.Specular * spec * vec3(texture(material.Specular, TexCoords));  
+	specular *= attenuation;
 
-	vec3 emission = texture(material.Emission, TexCoords + vec2(0, time)).rgb;
 
-	vec3 result = ambient + diffuse + specular + emission;
+	//vec3 emission = texture(material.Emission, TexCoords + vec2(0, time)).rgb;
+
+	vec3 result = ambient + diffuse + specular;// + emission;
 	FragColor = vec4(result, 1.0);
 }
