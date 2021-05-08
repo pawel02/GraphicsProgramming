@@ -11,7 +11,8 @@
 #include <glm/gtc/type_ptr.hpp>
 
 Camera::Camera(Shader* program, float screen_width, float screen_height) noexcept
-	:_program{program}, mouse_moved{0.0, 0.0}
+	:mouse_moved{0.0, 0.0},
+	projection{ glm::perspective(glm::radians(45.0f), screen_width / screen_height, 0.1f, 100.0f) }
 {
 	EventBus::subscribe<KeyPressedEvent>([&](BasicEvent* ev) {
 		return handle_key_pressed(static_cast<KeyPressedEvent*>(ev));
@@ -29,13 +30,22 @@ Camera::Camera(Shader* program, float screen_width, float screen_height) noexcep
 		Vec2<int> size = static_cast<WindowResizeEvent*>(ev)->get_size();
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f), static_cast<float>(size.x / size.y), 0.1f, 100.0f);
 
-		program->set_uniform_mat4f("projection", projection);
+		for (const auto& p : _programs)
+		{
+			p->bind();
+			p->set_uniform_mat4f("projection", projection);
+		}
 		return false;
 	});
 
-	glm::mat4 projection = glm::perspective(glm::radians(45.0f), screen_width / screen_height, 0.1f, 100.0f);
+	add_shader(program);
+}
 
-	program->set_uniform_mat4f("projection", projection);
+void Camera::add_shader(Shader* program) noexcept
+{
+	_programs.emplace_back(program);
+	_programs.back()->bind();
+	_programs.back()->set_uniform_mat4f("projection", projection);
 }
 
 void Camera::on_update(float deltaTime)
@@ -76,7 +86,12 @@ void Camera::on_update(float deltaTime)
 		cameraUp
 	);
 
-	_program->set_uniform_mat4f("view", view);
+	for (const auto& p : _programs)
+	{
+		p->bind();
+		p->set_uniform_mat4f("view", view);
+		p->set_uniform_3f("viewPos", cameraPos.x, cameraPos.y, cameraPos.z);
+	}
 }
 
 

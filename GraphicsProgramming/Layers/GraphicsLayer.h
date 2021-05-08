@@ -26,6 +26,7 @@ private:
 
 private:
 	VertexArray<float, unsigned int> VAO;
+	VertexArray<float, unsigned int> light_source;
 
 	glm::vec3 cubePos[10] = {
 		glm::vec3(0.0f,  0.0f,  0.0f),
@@ -44,9 +45,12 @@ private:
 
 	bool isPolygon = false;
 
-	Shader program;
+	Shader _program;
+	Shader _basic_program;
+
 	Camera _camera;
 
 	float blend_factor = 1.0f;
+	glm::vec3 lightpos{ 1.0f, 1.0f, 1.0f };
 
 };

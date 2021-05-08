@@ -49,6 +49,7 @@
   <ItemGroup>
     <None Include="Shaders\vertex.glsl" />
     <None Include="Shaders\fragment.glsl" />
+    <None Include="Shaders\basic_fragment.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shaders\Shader.h">
@@ -94,6 +95,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Layers\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shaders\basic_vertex.glsl">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

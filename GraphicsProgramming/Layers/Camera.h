@@ -5,13 +5,15 @@
 #include "../Events/Mouse.h"
 
 #include <glm/glm.hpp>
-
+#include <vector>
 
 class Camera
 {
 public:
 	Camera(Shader* program, float screen_width, float screen_height) noexcept;
 	~Camera() = default;
+
+	void add_shader(Shader* program) noexcept;
 	
 	void on_update(float deltaTime);
 
@@ -21,8 +23,9 @@ private:
 
 	bool handle_mouse(double deltaTime);
 private:
-	Shader* _program;
+	std::vector<Shader*> _programs;
 
+	glm::mat4 projection;
 
 	glm::vec3 cameraPos = { 0.0f, 0.0f, 3.0f };
 	glm::vec3 cameraFront = { 0.0f, 0.0f, -1.0f };
@@ -33,7 +36,7 @@ private:
 	char _keys_down = 0x00;
 
 	//mouse movement
-	char mouse_state = 0; // BIT(0) first movement, BIT(1) move_moved
+	char mouse_state = 0x00; // BIT(0) first movement, BIT(1) move_moved
 
 	Vec2<double> mouse_moved;
 

@@ -130,6 +130,12 @@ void Shader::set_uniform_4f(const char* uniform_name, float x, float y, float z,
 	glUniform4f(uniform_location, x, y, z, w);
 }
 
+void Shader::set_uniform_3f(const char* uniform_name, float x, float y, float z) noexcept
+{
+	int uniform_location = get_uniform_location(uniform_name);
+	glUniform3f(uniform_location, x, y, z);
+}
+
 void Shader::set_uniform_1i(const char* uniform_name, int i)
 {
 	int uniform_location = get_uniform_location(uniform_name);
