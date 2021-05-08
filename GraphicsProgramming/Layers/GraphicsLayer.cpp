@@ -150,7 +150,7 @@ void GraphicsLayer::on_update(float deltaTime)
 	_program.bind();
 	VAO.bind();
 
-	_program.set_uniform_3f("light.Pos", lightpos.x, lightpos.y, lightpos.z);
+	//_program.set_uniform_3f("light.Pos", lightpos.x, lightpos.y, lightpos.z);
 
 	//move the emission texture
 	_program.set_uniform_1f("time", (float)glfwGetTime());

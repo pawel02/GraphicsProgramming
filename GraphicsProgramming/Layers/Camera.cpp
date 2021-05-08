@@ -34,6 +34,10 @@ Camera::Camera(Shader* program, float screen_width, float screen_height) noexcep
 		{
 			p->bind();
 			p->set_uniform_mat4f("projection", projection);
+			p->set_uniform_3f("light.Pos", cameraPos.x, cameraPos.y, cameraPos.z);
+			p->set_uniform_3f("light.direction", cameraFront.x, cameraFront.y, cameraFront.z);
+			p->set_uniform_1f("light.cutOff", glm::cos(glm::radians(12.5f)));
+			p->set_uniform_1f("light.outerCutOff", glm::cos(glm::radians(15.5f)));
 		}
 		return false;
 	});
@@ -46,6 +50,11 @@ void Camera::add_shader(Shader* program) noexcept
 	_programs.emplace_back(program);
 	_programs.back()->bind();
 	_programs.back()->set_uniform_mat4f("projection", projection);
+
+	_programs.back()->set_uniform_3f("light.Pos", cameraPos.x, cameraPos.y, cameraPos.z);
+	_programs.back()->set_uniform_3f("light.direction", cameraFront.x, cameraFront.y, cameraFront.z);
+	_programs.back()->set_uniform_1f("light.cutOff", glm::cos(glm::radians(12.5f)));
+	_programs.back()->set_uniform_1f("light.outerCutOff", glm::cos(glm::radians(15.5f)));
 }
 
 void Camera::on_update(float deltaTime)
@@ -91,6 +100,10 @@ void Camera::on_update(float deltaTime)
 		p->bind();
 		p->set_uniform_mat4f("view", view);
 		p->set_uniform_3f("viewPos", cameraPos.x, cameraPos.y, cameraPos.z);
+		p->set_uniform_3f("light.Pos", cameraPos.x, cameraPos.y, cameraPos.z);
+		p->set_uniform_3f("light.direction", cameraFront.x, cameraFront.y, cameraFront.z);
+		p->set_uniform_1f("light.cutOff", glm::cos(glm::radians(12.5f)));
+		p->set_uniform_1f("light.outerCutOff", glm::cos(glm::radians(15.5f)));
 	}
 }
 
