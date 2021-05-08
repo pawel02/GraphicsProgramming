@@ -51,6 +51,6 @@ private:
 	Camera _camera;
 
 	float blend_factor = 1.0f;
-	glm::vec3 lightpos{ 1.0f, 1.0f, 1.0f };
+	glm::vec3 lightpos{ 1.0f, 1.2f, 2.0f };
 
 };

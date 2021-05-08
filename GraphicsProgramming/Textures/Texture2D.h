@@ -8,6 +8,20 @@ Wrapper for the texture0
 */
 class Texture2D
 {
+private:
+	struct TextureData
+	{
+		const char* _filepath;
+		Vec2<int> _texWrap;
+		Vec2<int> _texFiltering;
+
+		unsigned int buffer;
+		unsigned char* texData = nullptr;
+		int width, height, nChannels;
+	};
+
+	std::vector<TextureData> _data;
+
 public:
 	Texture2D(const char* filepath);
 	Texture2D(const char* filepath, const Vec2<int> texWrap, const Vec2<int> texFiltering);
@@ -22,17 +36,4 @@ private:
 	//loads the latest texture in the _data
 	void load_texture();
 
-private:
-	struct TextureData
-	{
-		const char* _filepath;
-		Vec2<int> _texWrap;
-		Vec2<int> _texFiltering;
-
-		unsigned int buffer;
-		unsigned char* texData = nullptr;
-		int width, height, nChannels;
-	};
-
-	std::vector<TextureData> _data;
 };

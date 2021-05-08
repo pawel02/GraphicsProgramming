@@ -76,8 +76,14 @@ void Texture2D::load_texture()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, data->_texFiltering.x);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, data->_texFiltering.y);
 
-
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, data->width, data->height, 0, GL_RGB, GL_UNSIGNED_BYTE, data->texData);
+		GLenum format;
+		if (data->nChannels == 1)
+			format = GL_RED;
+		else if (data->nChannels == 3)
+			format = GL_RGB;
+		else if (data->nChannels == 4)
+			format = GL_RGBA;
+		glTexImage2D(GL_TEXTURE_2D, 0, format, data->width, data->height, 0, format, GL_UNSIGNED_BYTE, data->texData);
 		glGenerateMipmap(GL_TEXTURE_2D);
 
 		//clear the memory for the image as its on the GPU now

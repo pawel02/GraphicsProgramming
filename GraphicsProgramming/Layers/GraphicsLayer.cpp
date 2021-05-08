@@ -25,47 +25,48 @@ GraphicsLayer::GraphicsLayer(Window* window) noexcept
 
 	//cube vertices with texCoords
 	float vertices[] = {
-	-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-	 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-	 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-	 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-	-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		// positions          // normals           // texture coords
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
 
-	-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-	 0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-	 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-	 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-	-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
 
-	-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-	-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-	-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-	-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-	-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-	-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
 
-	 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-	 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-	 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-	 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
 
-	-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-	 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-	 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-	 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
 
-	-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-	 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-	 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-	 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-	-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-	-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
 	};
 	unsigned int indices[] = {
 		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
@@ -78,16 +79,18 @@ GraphicsLayer::GraphicsLayer(Window* window) noexcept
 	VAO = std::move(VertexArray<float, unsigned int>{
 		vertices, sizeof(vertices), indices, sizeof(indices),
 		{
-			VertexAttribLayout{3, GL_FLOAT, GL_FALSE, 6 * sizeof(float)},
-			VertexAttribLayout{3, GL_FLOAT, GL_FALSE, 6 * sizeof(float)}
+			VertexAttribLayout{3, GL_FLOAT, GL_FALSE, 8 * sizeof(float)},
+			VertexAttribLayout{3, GL_FLOAT, GL_FALSE, 8 * sizeof(float)},
+			VertexAttribLayout{2, GL_FLOAT, GL_FALSE, 8 * sizeof(float)}
 		}
 	});
 
 	light_source = std::move(VertexArray<float, unsigned int>{
 		vertices, sizeof(vertices), indices, sizeof(indices),
 		{
-			VertexAttribLayout{3, GL_FLOAT, GL_FALSE, 6 * sizeof(float)},
-			VertexAttribLayout{3, GL_FLOAT, GL_FALSE, 6 * sizeof(float)}
+			VertexAttribLayout{3, GL_FLOAT, GL_FALSE, 8 * sizeof(float)},
+			VertexAttribLayout{3, GL_FLOAT, GL_FALSE, 8 * sizeof(float)},
+			VertexAttribLayout{2, GL_FLOAT, GL_FALSE, 8 * sizeof(float)}
 		}
 	});
 
@@ -106,15 +109,28 @@ GraphicsLayer::GraphicsLayer(Window* window) noexcept
 
 
 	//set the material for the cubes
-	_program.set_uniform_3f("material.Ambient", 1.0f, 0.5f, 0.31f);
-	_program.set_uniform_3f("material.Diffuse", 1.0f, 0.5f, 0.31f);
-	_program.set_uniform_3f("material.Specular", 0.5f, 0.5f, 0.5f);
+	Texture2D tex1{ "./assets/container.png" };
+	tex1.add_texture("./assets/container_specular.png");
+	tex1.add_texture("./assets/container_emission.jpg");
+
+	_program.set_uniform_1i("material.tex", 0);
+	_program.set_uniform_1i("material.Specular", 1);
+	_program.set_uniform_1i("material.Emission", 2);
 	_program.set_uniform_1f("material.Shininess", 256.0f);
 
 	//set the lighting
 	_program.set_uniform_3f("light.Ambient", 0.2f, 0.2f, 0.2f);
 	_program.set_uniform_3f("light.Diffuse", 0.5f, 0.5f, 0.5f);
 	_program.set_uniform_3f("light.Specular", 1.0f, 1.0f, 1.0f);
+
+	//set the light position
+	model = std::move(glm::mat4{ 1.0f });
+
+	model = glm::translate(model, lightpos);
+	model = glm::scale(model, glm::vec3{ 0.3f });
+
+	_basic_program.set_uniform_mat4f("model", model);
+
 }
 
 void GraphicsLayer::on_detach()
@@ -131,6 +147,9 @@ void GraphicsLayer::on_update(float deltaTime)
 	VAO.bind();
 
 	_program.set_uniform_3f("light.Pos", lightpos.x, lightpos.y, lightpos.z);
+
+	//move the emission texture
+	_program.set_uniform_1f("time", (float)glfwGetTime());
 
 	glm::vec3 lightColor;
 	lightColor.x = sin(glfwGetTime() * 2.0f);
@@ -156,17 +175,6 @@ void GraphicsLayer::on_update(float deltaTime)
 	//draw the light source
 	light_source.bind();
 	_basic_program.bind();
-
-	// move the light around the scene
-	glm::mat4 model{ 1.0f };
-
-	lightpos.x = std::sin((float)glfwGetTime()) * 5.0f;
-	lightpos.z = std::cos((float)glfwGetTime()) * 5.0f;
-
-	model = glm::translate(model, lightpos);
-	model = glm::scale(model, glm::vec3{ 0.3f });
-
-	_basic_program.set_uniform_mat4f("model", model);
 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 }
