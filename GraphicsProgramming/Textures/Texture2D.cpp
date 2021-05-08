@@ -5,6 +5,7 @@
 
 #include "Texture2D.h"
 
+
 Texture2D::Texture2D(const char* filepath)
 {
 	stbi_set_flip_vertically_on_load(true);
@@ -17,6 +18,15 @@ Texture2D::Texture2D(const char* filepath,
 {
 	add_texture(filepath, texWrap, texFiltering);
 }
+
+Texture2D::Texture2D(const Texture2D& other) noexcept
+{
+	_data = other._data;
+}
+
+Texture2D::Texture2D(Texture2D&& other) noexcept
+	:_data{std::move(other._data)}
+{}
 
 
 Texture2D::~Texture2D()
@@ -56,9 +66,10 @@ void Texture2D::bindAll()
 
 void Texture2D::load_texture()
 {
+	stbi_set_flip_vertically_on_load(true);
 	const auto data = _data.end() - 1;
 
-	data->texData = stbi_load(data->_filepath, &data->width, &data->height, &data->nChannels, 0);
+	data->texData = stbi_load(data->_filepath.c_str(), &data->width, &data->height, &data->nChannels, 0);
 	if (data->texData != nullptr)
 	{
 		//load the texture into graphics card
@@ -88,6 +99,7 @@ void Texture2D::load_texture()
 
 		//clear the memory for the image as its on the GPU now
 		stbi_image_free(data->texData);
+		data->texData = nullptr;
 	}
 	else
 	{

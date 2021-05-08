@@ -23,6 +23,13 @@ public:
 
 	~VertexBuffer() = default;
 
+	VertexBuffer(VertexBuffer&& other) noexcept
+		:_buffer{other._buffer},
+		_draw_method{other._draw_method},
+		_data{other._data},
+		_data_size{other._data_size}
+	{}
+
 	VertexBuffer& operator=(VertexBuffer&& other) noexcept
 	{
 		if (this != &other)
@@ -72,6 +79,13 @@ public:
 	}
 
 	~IndexBuffer() = default;
+
+	IndexBuffer(IndexBuffer&& other) noexcept
+		:_buffer{ other._buffer },
+		_draw_method{ other._draw_method },
+		_data{ other._data },
+		_data_size{ other._data_size }
+	{}
 
 	IndexBuffer& operator=(IndexBuffer&& other) noexcept
 	{

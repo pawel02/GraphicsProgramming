@@ -73,7 +73,13 @@ public:
 	// I don't really want these and can't really think of a use case at the moment
 	VertexArray(const VertexArray<VertexType, IndexType>& other) = delete;
 	VertexArray<VertexType, IndexType>& operator=(const VertexArray<VertexType, IndexType>& other) = delete;
-	VertexArray(VertexArray<VertexType, IndexType>&& other) = delete;
+	VertexArray(VertexArray<VertexType, IndexType>&& other) noexcept
+		:vertex_array{other.vertex_array},
+		_vertex_buffer{std::move(other._vertex_buffer)},
+		_index_buffer{ std::move(other._index_buffer)}
+	{
+		other.vertex_array = 4294967295;
+	};
 
 	VertexArray<VertexType, IndexType>& operator=(VertexArray<VertexType, IndexType>&& other) noexcept
 	{
