@@ -4,7 +4,7 @@
 #include "../Core/Core.h"
 
 #include "GraphicsLayer.h"
-#include "../Textures/Texture2D.h"
+
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -15,7 +15,7 @@ GraphicsLayer::GraphicsLayer(Window* window) noexcept
 	_program{ "./Shaders/vertex.glsl", "./Shaders/fragment.glsl" },
 	_basic_program{ "./Shaders/basic_vertex.glsl", "./Shaders/basic_fragment.glsl" },
 	_camera{&_program, 800.0f, 600.0f},
-	m_model{"./assets/backpack/backpack.obj"}
+	_textures{"./assets/window.png"}
 {
 	_camera.add_shader(&_basic_program);
 
@@ -30,9 +30,16 @@ GraphicsLayer::GraphicsLayer(Window* window) noexcept
 
 	_program.set_uniform_mat4f("model", model);
 
-	_program.set_uniform_3f("dirLight.ambient", 0.1f, 1.0f, 0.5f);
-	_program.set_uniform_3f("dirLight.diffuse", 0.1f, 1.0f, 0.5f);
-	_program.set_uniform_3f("dirLight.specular", 0.1f, 1.0f, 0.5f);
+	_program.set_uniform_1i("texture_diffuse1", 0);
+
+	window_source = std::move(VertexArray<float, unsigned int>{
+		vertices, sizeof(vertices), indices, sizeof(indices),
+		{
+			VertexAttribLayout{3, GL_FLOAT, GL_FALSE, 8 * sizeof(float)},
+			VertexAttribLayout{3, GL_FLOAT, GL_FALSE, 8 * sizeof(float)},
+			VertexAttribLayout{2, GL_FLOAT, GL_FALSE, 8 * sizeof(float)}
+		}
+	});
 
 	light_source = std::move(VertexArray<float, unsigned int>{
 		vertices, sizeof(vertices), indices, sizeof(indices),
@@ -59,14 +66,17 @@ void GraphicsLayer::on_detach()
 
 void GraphicsLayer::on_update(float deltaTime)
 {
-	_camera.on_update(deltaTime);
+	//draw the window
+	window_source.bind();
+	_program.bind();
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-	m_model.Draw(_program);
-	
 	//draw the light source
 	light_source.bind();
 	_basic_program.bind();
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	_camera.on_update(deltaTime);
 }
 
 bool GraphicsLayer::handle_key_pressed(KeyPressedEvent* ev)
