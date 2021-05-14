@@ -75,10 +75,22 @@ void GraphicsLayer::on_update(float deltaTime)
 {
 	_camera.on_update(deltaTime);
 
+	//draw the light source
+	light_source.bind();
+	_basic_program.bind();
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+
+	//draw the window
+	_program.bind();
+	_textures.bindAll();
+	window_source.bind();
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
 	//draw the cubemap
-	glDepthMask(GL_FALSE);
+	glDepthFunc(GL_LEQUAL);
 	cubemap_program.bind();
-	
+
 	cameraMatricies matricies = _camera.get_matricies();
 	cubemap_program.set_uniform_mat4f("projection", matricies.projection);
 
@@ -88,18 +100,7 @@ void GraphicsLayer::on_update(float deltaTime)
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTex);
 	cubemap.bind();
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	glDepthMask(GL_TRUE);
-
-	//draw the light source
-	light_source.bind();
-	_basic_program.bind();
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-	//draw the window
-	_program.bind();
-	_textures.bindAll();
-	window_source.bind();
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	glDepthFunc(GL_LESS);
 }
 
 bool GraphicsLayer::handle_key_pressed(KeyPressedEvent* ev)

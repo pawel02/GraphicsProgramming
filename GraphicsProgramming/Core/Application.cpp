@@ -75,7 +75,7 @@ void Application::run()
 	//create the main loop
 	while (_window.is_window_open())
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+		//glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 
 		//handle rendering
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -91,7 +91,7 @@ void Application::run()
 
 		previous_time = (float)glfwGetTime();
 
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		/*glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glDisable(GL_DEPTH_TEST);
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -99,7 +99,7 @@ void Application::run()
 		_program.bind();
 		VAO.bind();
 		glBindTexture(GL_TEXTURE_2D, _texture);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);*/
 
 		//swap the buffers and poll for events
 		glfwSwapBuffers(_window.get_window());
