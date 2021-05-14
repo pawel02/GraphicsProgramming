@@ -14,8 +14,7 @@ GraphicsLayer::GraphicsLayer(Window* window) noexcept
 	:_window{ window },
 	_program{ "./Shaders/vertex.glsl", "./Shaders/fragment.glsl" },
 	_basic_program{ "./Shaders/basic_vertex.glsl", "./Shaders/basic_fragment.glsl" },
-	_camera{&_program, 800.0f, 600.0f},
-	_textures{"./assets/window.png"}
+	_camera{&_program, 800.0f, 600.0f}
 {
 	_camera.add_shader(&_basic_program);
 
@@ -28,10 +27,6 @@ GraphicsLayer::GraphicsLayer(Window* window) noexcept
 	glm::mat4 model{ 1.0f };
 	model = glm::translate(model, glm::vec3(1.0f, 1.2f, 1.0f));
 
-	_program.set_uniform_mat4f("model", model);
-
-	_program.set_uniform_1i("texture_diffuse1", 0);
-
 	window_source = std::move(VertexArray<float, unsigned int>{
 		vertices, sizeof(vertices), indices, sizeof(indices),
 		{
@@ -40,6 +35,11 @@ GraphicsLayer::GraphicsLayer(Window* window) noexcept
 			VertexAttribLayout{2, GL_FLOAT, GL_FALSE, 8 * sizeof(float)}
 		}
 	});
+
+	_textures.add_texture("./assets/window.png");
+
+	_program.set_uniform_mat4f("model", model);
+	_program.set_uniform_1i("texture_diffuse1", 0);
 
 	light_source = std::move(VertexArray<float, unsigned int>{
 		vertices, sizeof(vertices), indices, sizeof(indices),
@@ -56,19 +56,18 @@ GraphicsLayer::GraphicsLayer(Window* window) noexcept
 	model = glm::translate(model, lightpos);
 	model = glm::scale(model, glm::vec3{0.3f});
 	_basic_program.set_uniform_mat4f("model", model);
-
 }
 
 void GraphicsLayer::on_detach()
 {
-	//do all the necessary cleanup
 }
 
 void GraphicsLayer::on_update(float deltaTime)
 {
 	//draw the window
-	window_source.bind();
 	_program.bind();
+	_textures.bindAll();
+	window_source.bind();
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 	//draw the light source

@@ -12,6 +12,7 @@
 
 #include "../Core/VertexArray.h"
 #include "Camera.h"
+#include "../Renderer/Model.h"
 
 
 class GraphicsLayer : public Layer
@@ -29,6 +30,7 @@ private:
 private:
 	VertexArray<float, unsigned int> light_source;
 	VertexArray<float, unsigned int> window_source;
+
 	Texture2D _textures;
 
 

@@ -169,6 +169,8 @@
   <ItemGroup>
     <None Include="Shaders\basic_fragment.glsl" />
     <None Include="Shaders\fragment.glsl" />
+    <None Include="Shaders\framebuffer_fragment.glsl" />
+    <None Include="Shaders\framebuffer_vertex.glsl" />
     <None Include="Shaders\vertex.glsl" />
   </ItemGroup>
   <ItemGroup>
