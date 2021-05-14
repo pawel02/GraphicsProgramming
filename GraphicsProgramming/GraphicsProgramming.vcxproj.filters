@@ -58,6 +58,8 @@
     <None Include="Shaders\basic_fragment.glsl" />
     <None Include="Shaders\framebuffer_fragment.glsl" />
     <None Include="Shaders\framebuffer_vertex.glsl" />
+    <None Include="Shaders\cubemap_vs.glsl" />
+    <None Include="Shaders\cubemap_fs.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shaders\Shader.h">

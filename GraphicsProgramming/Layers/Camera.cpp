@@ -83,7 +83,7 @@ void Camera::on_update(float deltaTime)
 	}
 
 
-	glm::mat4 view = glm::lookAt(
+	view = glm::lookAt(
 		cameraPos,
 		cameraPos + cameraFront,
 		cameraUp

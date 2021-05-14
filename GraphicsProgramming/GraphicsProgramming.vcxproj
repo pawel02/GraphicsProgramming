@@ -168,6 +168,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\basic_fragment.glsl" />
+    <None Include="Shaders\cubemap_fs.glsl" />
+    <None Include="Shaders\cubemap_vs.glsl" />
     <None Include="Shaders\fragment.glsl" />
     <None Include="Shaders\framebuffer_fragment.glsl" />
     <None Include="Shaders\framebuffer_vertex.glsl" />

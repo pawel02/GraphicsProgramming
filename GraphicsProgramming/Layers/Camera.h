@@ -7,6 +7,12 @@
 #include <glm/glm.hpp>
 #include <vector>
 
+struct cameraMatricies
+{
+	glm::mat4 projection;
+	glm::mat4 view;
+};
+
 class Camera
 {
 public:
@@ -17,6 +23,8 @@ public:
 	
 	void on_update(float deltaTime);
 
+	const cameraMatricies get_matricies() const noexcept { return{ projection, view}; }
+
 private:
 	bool handle_key_pressed(KeyPressedEvent* ev);
 	bool handle_key_released(KeyReleasedEvent* ev);
@@ -26,10 +34,12 @@ private:
 	std::vector<Shader*> _programs;
 
 	glm::mat4 projection;
+	glm::mat4 view;
 
 	glm::vec3 cameraPos = { 0.0f, 0.0f, 3.0f };
 	glm::vec3 cameraFront = { 0.0f, 0.0f, -1.0f };
 	glm::vec3 cameraUp = { 0.0f, 1.0f, 0.0f };
+	
 
 	float cameraSpeed = 5.0f;
 

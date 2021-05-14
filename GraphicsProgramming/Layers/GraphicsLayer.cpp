@@ -1,19 +1,19 @@
 #include <algorithm>
 #include <iostream>
+#include <stb_image.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "../Core/Core.h"
 
 #include "GraphicsLayer.h"
 
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 GraphicsLayer::GraphicsLayer(Window* window) noexcept
 	:_window{ window },
 	_program{ "./Shaders/vertex.glsl", "./Shaders/fragment.glsl" },
 	_basic_program{ "./Shaders/basic_vertex.glsl", "./Shaders/basic_fragment.glsl" },
+	cubemap_program{ "./Shaders/cubemap_vs.glsl", "./Shaders/cubemap_fs.glsl" },
 	_camera{&_program, 800.0f, 600.0f}
 {
 	_camera.add_shader(&_basic_program);
@@ -56,6 +56,15 @@ GraphicsLayer::GraphicsLayer(Window* window) noexcept
 	model = glm::translate(model, lightpos);
 	model = glm::scale(model, glm::vec3{0.3f});
 	_basic_program.set_uniform_mat4f("model", model);
+
+	cubemap = std::move(VertexArray<float, unsigned int>{
+		skyboxVertices, sizeof(skyboxVertices), indices, sizeof(indices),
+		{
+			VertexAttribLayout{3, GL_FLOAT, GL_FALSE, 3 * sizeof(float)},
+		}
+	});
+	cubemapTex = load_skybox(faces);
+	cubemap_program.set_uniform_1i("skybox", 0);
 }
 
 void GraphicsLayer::on_detach()
@@ -64,18 +73,33 @@ void GraphicsLayer::on_detach()
 
 void GraphicsLayer::on_update(float deltaTime)
 {
-	//draw the window
-	_program.bind();
-	_textures.bindAll();
-	window_source.bind();
+	_camera.on_update(deltaTime);
+
+	//draw the cubemap
+	glDepthMask(GL_FALSE);
+	cubemap_program.bind();
+	
+	cameraMatricies matricies = _camera.get_matricies();
+	cubemap_program.set_uniform_mat4f("projection", matricies.projection);
+
+	glm::mat4 view = glm::mat4(glm::mat3(matricies.view));
+	cubemap_program.set_uniform_mat4f("view", view);
+
+	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTex);
+	cubemap.bind();
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	glDepthMask(GL_TRUE);
 
 	//draw the light source
 	light_source.bind();
 	_basic_program.bind();
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-	_camera.on_update(deltaTime);
+	//draw the window
+	_program.bind();
+	_textures.bindAll();
+	window_source.bind();
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 }
 
 bool GraphicsLayer::handle_key_pressed(KeyPressedEvent* ev)
@@ -102,4 +126,35 @@ bool GraphicsLayer::handle_key_pressed(KeyPressedEvent* ev)
 	}
 
 	return false;
+}
+
+unsigned int GraphicsLayer::load_skybox(std::vector<std::string> faces)
+{
+	unsigned int texID;
+	glGenTextures(1, &texID);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, texID);
+
+	int width, height, nChannels;
+	for (unsigned int i = 0; i < faces.size(); i++)
+	{
+		stbi_set_flip_vertically_on_load(true);
+		unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nChannels, 0);
+		if (data)
+		{
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		}
+		else
+		{
+			std::cout << "Failed to load cubemap";
+		}
+		stbi_image_free(data);
+
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	}
+	return texID;
 }

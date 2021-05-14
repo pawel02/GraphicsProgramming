@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+#include <string>
 #include <glm/glm.hpp>
 
 #include "../Shaders/Shader.h"
@@ -26,6 +28,8 @@ public:
 
 private:
 	bool handle_key_pressed(KeyPressedEvent* ev);
+
+	unsigned int load_skybox(std::vector<std::string> faces);
 
 private:
 	VertexArray<float, unsigned int> light_source;
@@ -98,4 +102,67 @@ private:
 		21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
 		31, 32, 33, 34, 35
 	};
+
+
+	//cubemap
+
+	float skyboxVertices[216] = {
+		// positions          
+		-1.0f,  1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		-1.0f,  1.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		 1.0f, -1.0f,  1.0f
+	};
+
+
+
+	VertexArray<float, unsigned int> cubemap;
+	Shader cubemap_program;
+	std::vector<std::string> faces =
+	{
+		"E:\\pawel\\coding(learning)\\c++\\GraphicsProgramming\\GraphicsProgramming\\assets\\skybox\\right.jpg",
+		"E:\\pawel\\coding(learning)\\c++\\GraphicsProgramming\\GraphicsProgramming\\assets\\skybox\\left.jpg",
+		"E:\\pawel\\coding(learning)\\c++\\GraphicsProgramming\\GraphicsProgramming\\assets\\skybox\\bottom.jpg",
+		"E:\\pawel\\coding(learning)\\c++\\GraphicsProgramming\\GraphicsProgramming\\assets\\skybox\\top.jpg",
+		"E:\\pawel\\coding(learning)\\c++\\GraphicsProgramming\\GraphicsProgramming\\assets\\skybox\\front.jpg",
+		"E:\\pawel\\coding(learning)\\c++\\GraphicsProgramming\\GraphicsProgramming\\assets\\skybox\\back.jpg"
+	};
+	unsigned int cubemapTex;
 };
