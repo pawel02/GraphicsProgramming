@@ -65,7 +65,6 @@ void Application::run()
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
 
 	previous_time = (float)glfwGetTime();
 	float deltaTime = 0.0f;
