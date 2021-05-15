@@ -65,7 +65,7 @@ GraphicsLayer::GraphicsLayer(Window* window) noexcept
 	});
 	cubemapTex = load_skybox(faces);
 	cubemap_program.set_uniform_1i("skybox", 0);
-}
+} 
 
 void GraphicsLayer::on_detach()
 {
@@ -84,6 +84,7 @@ void GraphicsLayer::on_update(float deltaTime)
 	//draw the window
 	_program.bind();
 	_textures.bindAll();
+	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTex);
 	window_source.bind();
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
@@ -96,7 +97,7 @@ void GraphicsLayer::on_update(float deltaTime)
 
 	glm::mat4 view = glm::mat4(glm::mat3(matricies.view));
 	cubemap_program.set_uniform_mat4f("view", view);
-
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTex);
 	cubemap.bind();
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
@@ -138,7 +139,7 @@ unsigned int GraphicsLayer::load_skybox(std::vector<std::string> faces)
 	int width, height, nChannels;
 	for (unsigned int i = 0; i < faces.size(); i++)
 	{
-		stbi_set_flip_vertically_on_load(true);
+		stbi_set_flip_vertically_on_load(false);
 		unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nChannels, 0);
 		if (data)
 		{

@@ -98,6 +98,7 @@ void Application::run()
 		_program.bind();
 		VAO.bind();
 		glBindTexture(GL_TEXTURE_2D, _texture);
+		glActiveTexture(GL_TEXTURE0);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glEnable(GL_DEPTH_TEST);
 

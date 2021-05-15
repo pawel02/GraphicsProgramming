@@ -159,8 +159,8 @@ private:
 	{
 		"E:\\pawel\\coding(learning)\\c++\\GraphicsProgramming\\GraphicsProgramming\\assets\\skybox\\right.jpg",
 		"E:\\pawel\\coding(learning)\\c++\\GraphicsProgramming\\GraphicsProgramming\\assets\\skybox\\left.jpg",
-		"E:\\pawel\\coding(learning)\\c++\\GraphicsProgramming\\GraphicsProgramming\\assets\\skybox\\bottom.jpg",
 		"E:\\pawel\\coding(learning)\\c++\\GraphicsProgramming\\GraphicsProgramming\\assets\\skybox\\top.jpg",
+		"E:\\pawel\\coding(learning)\\c++\\GraphicsProgramming\\GraphicsProgramming\\assets\\skybox\\bottom.jpg",
 		"E:\\pawel\\coding(learning)\\c++\\GraphicsProgramming\\GraphicsProgramming\\assets\\skybox\\front.jpg",
 		"E:\\pawel\\coding(learning)\\c++\\GraphicsProgramming\\GraphicsProgramming\\assets\\skybox\\back.jpg"
 	};
