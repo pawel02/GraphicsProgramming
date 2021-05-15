@@ -9,10 +9,14 @@ uniform vec3 viewPos;
 uniform sampler2D texture_diffuse1;
 uniform samplerCube skybox;
 
-const float reflective = 0.5;
 void main()
 {    
-    vec3 I = normalize(FragPos - viewPos);
-    vec3 R = reflect(I, normalize(Normal));
-    FragColor = vec4(texture(skybox, R).rgb, 1.0);
+//    vec3 I = normalize(FragPos - viewPos);
+//    vec3 R = reflect(I, normalize(Normal));
+//    FragColor = vec4(mix(texture(texture_diffuse1, TexCoords).rgb, texture(skybox, R).rgb, 0.5),1.0);
+
+    float ratio = 1 / 1.33;
+	vec3 I = normalize(FragPos - viewPos);
+	vec3 R = refract(I, normalize(Normal), ratio);
+	FragColor = vec4(texture(skybox, R).rgb, 1.0);
 }

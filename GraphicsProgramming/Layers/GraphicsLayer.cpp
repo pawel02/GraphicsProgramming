@@ -65,6 +65,8 @@ GraphicsLayer::GraphicsLayer(Window* window) noexcept
 	});
 	cubemapTex = load_skybox(faces);
 	cubemap_program.set_uniform_1i("skybox", 0);
+	_program.bind();
+	_program.set_uniform_1i("skybox", 1);
 } 
 
 void GraphicsLayer::on_detach()
@@ -84,6 +86,7 @@ void GraphicsLayer::on_update(float deltaTime)
 	//draw the window
 	_program.bind();
 	_textures.bindAll();
+	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTex);
 	window_source.bind();
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
